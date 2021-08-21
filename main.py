@@ -2,12 +2,19 @@ from tkinter import*
 import random
 import time
 import csv
+import pandas as pd
+from datetime import datetime
+
+totalPemasukan = 0
+namaFile = datetime.today().strftime('%Y-%m-%d')
 
 ########## FUNGSI TOTAL ##########
 def totalFunction():
-    x=random.randint(12980, 50876)
+    global totalPemasukan
+
+    x = random.randint(12980, 50876)
     randomRef = str(x)
-    no_order.set(randomRef)
+    idOrder.set(randomRef)
 
     food_1 = float(Makanan1.get())
     food_2 = float(Makanan2.get())
@@ -24,30 +31,59 @@ def totalFunction():
     totalFood5 = food_5 * 30000
     totalDrinks = drink * 15000
 
-    hargaBersih = (totalFood1 + totalFood2 + totalFood3 + totalFood4 + totalFood5 + totalDrinks)
-    hargaBersihRp = "Rp.", str('%.2f'% (hargaBersih))
+    hargaBersih = round(totalFood1 + totalFood2 + totalFood3 + totalFood4 + totalFood5 + totalDrinks)
+    hargaBersihRp = "Rp.", str('%.2f'% hargaBersih)
 
-    hargaServis = ((totalFood1 + totalFood2 + totalFood3 + totalFood4 + totalFood5 + totalDrinks)/99)
+    hargaServis = round((totalFood1 + totalFood2 + totalFood3 + totalFood4 + totalFood5 + totalDrinks)/99)
     hargaServisRp = "Rp.", str('%.2f'% hargaServis)
 
-    hargaPajak = ((totalFood1 + totalFood2 + totalFood3 + totalFood4 + totalFood5 + totalDrinks) * 0.2)
+    hargaPajak = round((totalFood1 + totalFood2 + totalFood3 + totalFood4 + totalFood5 + totalDrinks) * 0.2)
     hargaPajakRp= "Rp.", str('%.2f'% hargaPajak)
 
-    hargaTotal = (hargaPajak + hargaBersih + hargaServis)
-    hargaTotalRp = "Rp.", str('%.2f'%(hargaTotal))
+    hargaTotal = round(hargaPajak + hargaBersih + hargaServis)
+    hargaTotalRp = "Rp.", str(('%.2f'% hargaTotal))
 
-    uangRp = "Rp.", str('%.2f'% intUang)
+    hargaKembalian = round(intUang - hargaTotal)
 
-    hargaKembalian = (intUang - hargaTotal)
-    hargaKembalianRp = "Rp.", str('%.2f'% hargaKembalian)
+    totalPemasukan += (hargaTotal)
 
+    if hargaKembalian < 0:
+        totalPemasukan -= (hargaTotal)
+        hargaKembalianRp = "Uang Tidak Cukup"
+
+    else:
+        hargaKembalianRp = "Rp.", str('%.2f'% hargaKembalian)
+
+        totalPemasukanRp = "Rp"+str(totalPemasukan) 
+
+        dataPenjualan = [localtime, randomRef, str('%.0f'% food_1), str('%.0f'% food_2), str('%.0f'% food_3), str('%.0f'% food_4), str('%.0f'% food_5), \
+                        str('%.0f'% drink), 'Rp' + str(hargaBersih), 'Rp' + str(hargaServis), 'Rp' + str(hargaPajak), 'Rp' + str(hargaTotal), \
+                        'Rp' + str(intUang), 'Rp' + str(hargaKembalian), 'Rp' + str(totalPemasukan)]
+
+        fileName = 'Data Penjualan'+'-'+namaFile+'.csv'
+
+        with open(fileName, 'a') as f:
+            w=csv.writer(f, quoting=csv.QUOTE_ALL)
+            w.writerow(dataPenjualan)
+
+        file = open(fileName)
+        reader = csv.reader(file)
+        lines= len(list(reader)) - 1
+
+        df = pd.read_csv(fileName)
+        df.to_csv(fileName, header=["Waktu Pemesanan","Id Order","Makanan 1","Makanan 2","Makanan 3","Makanan 4","Makanan 5","Minuman",\
+                                    "Harga Bersih","Harga Servis","Harga Pajak","Harga Total","Uang","Kembalian","Pemasukan"], index=False)
+
+        Pelanggan.set(lines)
+        Income.set(totalPemasukanRp)
+    
     Subtotal.set(hargaBersihRp)
     Service_Charge.set(hargaServisRp)
     Tax.set(hargaPajakRp)
     Total.set(hargaTotalRp)
-    Uang.set(uangRp)
+    Uang.set(intUang)
     Kembalian.set(hargaKembalianRp)
-
+    
 ########## FUNGSI EXIT ##########
 def exitFunction():
     root.destroy()
@@ -57,7 +93,7 @@ def resetFunction():
     localtime=time.asctime(time.localtime(time.time()))
     labelWaktu = Label(judulCont, font=( 'aria' , 20, ), text=localtime, fg="steel blue", anchor=W)
     labelWaktu.grid(row=3, column=0)
-    no_order.set(int(0))
+    idOrder.set(int(0))
     Makanan1.set(int(0))
     Makanan2.set(int(0))
     Makanan3.set(int(0))
@@ -113,7 +149,7 @@ def list_menu():
 #######################################################################################################################
 
 root = Tk()
-root.geometry("1080x810+0+0")
+root.geometry("1080x850+0+0")
 root.title("Restaurant Management System")
 
 judulCont = Frame(root, width = 1600, height=50, relief=SUNKEN)
@@ -148,7 +184,7 @@ text_Input=StringVar()
 operator =""
 
 ########## INISIASI ##########
-no_order = StringVar()
+idOrder = StringVar()
 Makanan1 = StringVar()
 Makanan2 = StringVar()
 Makanan3 = StringVar()
@@ -161,6 +197,8 @@ Service_Charge = StringVar()
 Tax = StringVar()
 Uang = StringVar()
 Kembalian = StringVar()
+Income = StringVar()
+Pelanggan = StringVar()
 
 ########## TAMPILAN INPUT ##########
 lblgaris1= Label(inputCont, text=" ", fg="steel blue")
@@ -169,9 +207,9 @@ lblgaris1.grid(row=0, columnspan=15)
 lblgaris2 = Label(inputCont, text=" ", fg="steel blue")
 lblgaris2.grid(row=1, columnspan=15)
 
-labelOrder = Label(inputCont, font=( 'aria' , 16, 'bold' ), text="Order No.", fg="steel blue", bd=10, anchor='w')
+labelOrder = Label(inputCont, font=( 'aria' , 16, 'bold' ), text="Id Order", fg="steel blue", bd=10, anchor='w')
 labelOrder.grid(row=2, column=0)
-inputOrder = Entry(inputCont, font=('ariel' , 16, 'bold'), textvariable=no_order , bd=6, insertwidth=4, bg="powder blue" , justify='right')
+inputOrder = Entry(inputCont, font=('ariel' , 16, 'bold'), textvariable=idOrder , bd=6, insertwidth=4, bg="powder blue" , justify='right')
 inputOrder.grid(row=2, column=1)
 
 labelMakanan1 = Label(inputCont, font=( 'aria' , 16, 'bold' ), text="Fries Meal", fg="steel blue", bd=10, anchor='w')
@@ -244,11 +282,15 @@ lblgaris1.grid(row=0, columnspan=15)
 lblgaris2 = Label(infoCont, text=" ", fg="steel blue")
 lblgaris2.grid(row=1, columnspan=15)
 
-lblpelanggan = Label(infoCont, font=( 'aria' , 16, 'bold' ), text="Total of Coustomer", fg="steel blue", justify=RIGHT)
+lblpelanggan = Label(infoCont, font=( 'aria' , 16, 'bold' ), text="Total Coustomer", fg="steel blue", justify=RIGHT)
 lblpelanggan.grid(row=2, column=0)
+lblpelanggan = Label(infoCont, font=( 'aria' , 16, 'bold' ), textvariable=Pelanggan, fg="steel blue", justify=RIGHT)
+lblpelanggan.grid(row=3, column=0)
 
 lblpelanggan = Label(infoCont, font=( 'aria' , 16, 'bold' ), text="Income", fg="steel blue", justify=RIGHT)
-lblpelanggan.grid(row=3, column=0)
+lblpelanggan.grid(row=4, column=0)
+lblpelanggan = Label(infoCont, font=( 'aria' , 16, 'bold' ), textvariable=Income, fg="steel blue", justify=RIGHT)
+lblpelanggan.grid(row=5, column=0)
 
 ########## TOMBOL MENU ##########
 lblgaris1= Label(buttonCont, text=" ", fg="steel blue")
