@@ -4,9 +4,10 @@ import time
 import csv
 import pandas as pd
 from datetime import datetime
+from PIL import Image,ImageTk
 
 totalPemasukan = 0
-namaFile = datetime.today().strftime('%Y-%m-%d')
+namaFile = datetime.today().strftime('%Y-%m-%d-p')
 
 ########## FUNGSI TOTAL ##########
 def totalFunction():
@@ -25,19 +26,19 @@ def totalFunction():
     intUang= int(Uang.get())
 
     totalFood1 = food_1 * 15000
-    totalFood2 = food_2 * 20000
-    totalFood3 = food_3 * 25000
-    totalFood4 = food_4 * 25000
-    totalFood5 = food_5 * 30000
-    totalDrinks = drink * 15000
+    totalFood2 = food_2 * 15000
+    totalFood3 = food_3 * 12000
+    totalFood4 = food_4 * 10000
+    totalFood5 = food_5 * 18000
+    totalDrinks = drink * 5000
 
     hargaBersih = round(totalFood1 + totalFood2 + totalFood3 + totalFood4 + totalFood5 + totalDrinks)
     hargaBersihRp = "Rp.", str('%.2f'% hargaBersih)
 
-    hargaServis = round((totalFood1 + totalFood2 + totalFood3 + totalFood4 + totalFood5 + totalDrinks)/99)
+    hargaServis = round((totalFood1 + totalFood2 + totalFood3 + totalFood4 + totalFood5 + totalDrinks)*0.01)
     hargaServisRp = "Rp.", str('%.2f'% hargaServis)
 
-    hargaPajak = round((totalFood1 + totalFood2 + totalFood3 + totalFood4 + totalFood5 + totalDrinks) * 0.2)
+    hargaPajak = round((totalFood1 + totalFood2 + totalFood3 + totalFood4 + totalFood5 + totalDrinks)*0.02)
     hargaPajakRp= "Rp.", str('%.2f'% hargaPajak)
 
     hargaTotal = round(hargaPajak + hargaBersih + hargaServis)
@@ -91,7 +92,7 @@ def exitFunction():
 ########## FUNGSI RESET ##########
 def resetFunction():
     localtime=time.asctime(time.localtime(time.time()))
-    labelWaktu = Label(judulCont, font=( 'aria' , 20, ), text=localtime, fg="steel blue", anchor=W)
+    labelWaktu = Label(judulCont, font=( 'Consolas' , 20, ), text=localtime, fg="steel blue", anchor=W,bg="#F6F6F6")
     labelWaktu.grid(row=3, column=0)
     idOrder.set(int(0))
     Makanan1.set(int(0))
@@ -109,74 +110,90 @@ def resetFunction():
 
 ########## FUNGSI LIST MENU ##########
 def list_menu():
-    roo = Tk()
-    roo.geometry("600x220+0+0")
-    roo.title("Price List")
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="ITEM", fg="black", bd=5)
+    menu = Tk()
+    menu.geometry("420x220+0+0")
+    menu.title("Harga")
+    lblinfo = Label(menu, font=('Consolas', 15, 'bold'), text="MENU", fg="black", bd=5)
     lblinfo.grid(row=0, column=0)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="_____________", fg="white", anchor=W)
+    lblinfo = Label(menu, font=('Consolas', 15, 'bold'), text="_____________", fg="white", anchor=W)
     lblinfo.grid(row=0, column=2)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="PRICE", fg="black", anchor=W)
+    lblinfo = Label(menu, font=('Consolas', 15, 'bold'), text="HARGA", fg="black", anchor=W)
     lblinfo.grid(row=0, column=3)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="Fries Meal", fg="steel blue", anchor=W)
+    lblinfo = Label(menu, font=('Consolas', 15, 'bold'), text="Nasi Goreng", fg="steel blue", anchor=W)
     lblinfo.grid(row=1, column=0)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="15000", fg="steel blue", anchor=W)
+    lblinfo = Label(menu, font=('Consolas', 15, 'bold'), text="Rp15000", fg="steel blue", anchor=W)
     lblinfo.grid(row=1, column=3)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="Lunch Meal", fg="steel blue", anchor=W)
+    lblinfo = Label(menu, font=('Consolas', 15, 'bold'), text="Nasi Uduk", fg="steel blue", anchor=W)
     lblinfo.grid(row=2, column=0)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="20000", fg="steel blue", anchor=W)
+    lblinfo = Label(menu, font=('Consolas', 15, 'bold'), text="Rp15000", fg="steel blue", anchor=W)
     lblinfo.grid(row=2, column=3)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="Burger Meal", fg="steel blue", anchor=W)
+    lblinfo = Label(menu, font=('Consolas', 15, 'bold'), text="Lontong Sayur", fg="steel blue", anchor=W)
     lblinfo.grid(row=3, column=0)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="25000", fg="steel blue", anchor=W)
+    lblinfo = Label(menu, font=('Consolas', 15, 'bold'), text="Rp12000", fg="steel blue", anchor=W)
     lblinfo.grid(row=3, column=3)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="Pizza Meal", fg="steel blue", anchor=W)
+    lblinfo = Label(menu, font=('Consolas', 15, 'bold'), text="Bubur Ayam", fg="steel blue", anchor=W)
     lblinfo.grid(row=4, column=0)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="25000", fg="steel blue", anchor=W)
+    lblinfo = Label(menu, font=('Consolas', 15, 'bold'), text="Rp10000", fg="steel blue", anchor=W)
     lblinfo.grid(row=4, column=3)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="Cheese Burger", fg="steel blue", anchor=W)
+    lblinfo = Label(menu, font=('Consolas', 15, 'bold'), text="Soto Betawi", fg="steel blue", anchor=W)
     lblinfo.grid(row=5, column=0)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="30000", fg="steel blue", anchor=W)
+    lblinfo = Label(menu, font=('Consolas', 15, 'bold'), text="Rp18000", fg="steel blue", anchor=W)
     lblinfo.grid(row=5, column=3)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="Drinks", fg="steel blue", anchor=W)
+    lblinfo = Label(menu, font=('Consolas', 15, 'bold'), text="Teh Manis", fg="steel blue", anchor=W)
     lblinfo.grid(row=6, column=0)
-    lblinfo = Label(roo, font=('aria', 15, 'bold'), text="15000", fg="steel blue", anchor=W)
+    lblinfo = Label(menu, font=('Consolas', 15, 'bold'), text="Rp5000", fg="steel blue", anchor=W)
     lblinfo.grid(row=6, column=3)
 
-    roo.mainloop()
+    menu.mainloop()
+
+########## FUNGSI INPUT GAMBAR ##########
+def inputGambar(path, baris):
+    image= (Image.open(path))
+    resized_image= image.resize((55,55), Image.ANTIALIAS)
+    img= ImageTk.PhotoImage(resized_image)
+    label1 = Label(inputCont, bg="#F6F6F6", image=img)
+    label1.image = img
+    label1.grid(row=baris, column=0)
 
 #######################################################################################################################
 #######################################################################################################################
 
 root = Tk()
-root.geometry("1080x850+0+0")
-root.title("Restaurant Management System")
+root.geometry("1920x10800+0+0")
+root.title("Restaurant Nusantara")
 
-judulCont = Frame(root, width = 1600, height=50, relief=SUNKEN)
+image= (Image.open("img/bg.png"))
+resized_image= image.resize((1920,1080), Image.ANTIALIAS)
+img= ImageTk.PhotoImage(resized_image)
+label1 = Label(root, image=img)
+label1.image = img
+label1.place(x = 0,y = 0)
+
+judulCont = Frame(root, width = 1600, height=50, relief=SUNKEN, bg="#F6F6F6")
 judulCont.pack(side=TOP)
 
-inputCont = Frame(root, width = 900, height=700, relief=SUNKEN)
+inputCont = Frame(root, width = 900, height=700, relief=SUNKEN, bg="#F6F6F6")
 inputCont.pack(side=TOP)
 
-infoCont = Frame(root, width = 900, height=500, relief=SUNKEN)
+infoCont = Frame(root, width = 900, height=500, relief=SUNKEN, bg="#F6F6F6")
 infoCont.pack(side=TOP)
 
-buttonCont = Frame(root, width = 900, height=500, relief=SUNKEN)
+buttonCont = Frame(root, width = 900, height=500, relief=SUNKEN, bg="#F6F6F6")
 buttonCont.pack(side=TOP)
 
 ########## FETCH TIME ##########
 localtime=time.asctime(time.localtime(time.time()))
 
 ########## TAMPILAN JUDUL ##########
-lblgaris1= Label(judulCont, text=" ", fg="steel blue")
+lblgaris1= Label(judulCont, text=" ", bg="#F6F6F6")
 lblgaris1.grid(row=0, columnspan=15)
 
-lblgaris2 = Label(judulCont, text=" ", fg="steel blue")
+lblgaris2 = Label(judulCont, text=" ",bg="#F6F6F6")
 lblgaris2.grid(row=1, columnspan=15)
 
-labelResto = Label(judulCont, font=( 'aria' , 30, 'bold' ), text="Restaurant Management System", fg="steel blue", bd=10, anchor='w')
+labelResto = Label(judulCont, font=( 'Consolas' , 30, 'bold' ), text="Restaurant Nusantara", fg="steel blue", bg="#F6F6F6", bd=10, anchor='w')
 labelResto.grid(row=2, column=0)
-labelWaktu = Label(judulCont, font=( 'aria' , 20, ), text=localtime, fg="steel blue", anchor=W)
+labelWaktu = Label(judulCont, font=( 'Consolas' , 20, ), text=localtime, fg="steel blue", bg="#F6F6F6", anchor=W)
 labelWaktu.grid(row=3, column=0)
 
 
@@ -201,117 +218,127 @@ Income = StringVar()
 Pelanggan = StringVar()
 
 ########## TAMPILAN INPUT ##########
-lblgaris1= Label(inputCont, text=" ", fg="steel blue")
+lblgaris1= Label(inputCont, text=" ",bg="#F6F6F6")
 lblgaris1.grid(row=0, columnspan=15)
 
-lblgaris2 = Label(inputCont, text=" ", fg="steel blue")
+lblgaris2 = Label(inputCont, text=" ",bg="#F6F6F6")
 lblgaris2.grid(row=1, columnspan=15)
 
-labelOrder = Label(inputCont, font=( 'aria' , 16, 'bold' ), text="Id Order", fg="steel blue", bd=10, anchor='w')
-labelOrder.grid(row=2, column=0)
-inputOrder = Entry(inputCont, font=('ariel' , 16, 'bold'), textvariable=idOrder , bd=6, insertwidth=4, bg="powder blue" , justify='right')
-inputOrder.grid(row=2, column=1)
+labelOrder = Label(inputCont, font=( 'Consolas' , 18, 'bold' ), text="Id Order", fg="steel blue", bg="#F6F6F6", bd=10, anchor='w', padx=10, pady=10)
+labelOrder.grid(row=2, column=1)
+inputOrder = Entry(inputCont, font=('Consolas' , 18, 'bold'), textvariable=idOrder , bd=6, insertwidth=4, bg="powder blue" , justify='right')
+inputOrder.grid(row=2, column=2)
 
-labelMakanan1 = Label(inputCont, font=( 'aria' , 16, 'bold' ), text="Fries Meal", fg="steel blue", bd=10, anchor='w')
-labelMakanan1.grid(row=3, column=0)
-inputMakanan1 = Entry(inputCont, font=('ariel' , 16, 'bold'), textvariable=Makanan1 , bd=6, insertwidth=4, bg="powder blue" , justify='right')
-inputMakanan1.grid(row=3, column=1)
 
-labelMakanan2 = Label(inputCont, font=( 'aria' , 16, 'bold' ), text="Lunch Meal", fg="steel blue", bd=10, anchor='w')
-labelMakanan2.grid(row=4, column=0)
-inputMakanan2 = Entry(inputCont, font=('ariel' , 16, 'bold'), textvariable=Makanan2 , bd=6, insertwidth=4, bg="powder blue" , justify='right')
-inputMakanan2.grid(row=4, column=1)
+labelMakanan1 = Label(inputCont, font=( 'Consolas' , 18, 'bold' ), text="Nasi Goreng", fg="steel blue", bg="#F6F6F6", bd=10, anchor='w', padx=10, pady=10)
+labelMakanan1.grid(row=3, column=1)
+inputMakanan1 = Entry(inputCont, font=('Consolas' , 18, 'bold'), textvariable=Makanan1 , bd=6, insertwidth=4, bg="powder blue" , justify='right')
+inputMakanan1.grid(row=3, column=2)
 
-labelMakanan3 = Label(inputCont, font=( 'aria' , 16, 'bold' ), text="Burger Meal", fg="steel blue", bd=10, anchor='w')
-labelMakanan3.grid(row=5, column=0)
-inputMakanan3 = Entry(inputCont, font=('ariel' , 16, 'bold'), textvariable=Makanan3 , bd=6, insertwidth=4, bg="powder blue" , justify='right')
-inputMakanan3.grid(row=5, column=1)
+inputGambar("img/makanan1.png", 3)
 
-labelMakanan4 = Label(inputCont, font=( 'aria' , 16, 'bold' ), text="Pizza Meal", fg="steel blue", bd=10, anchor='w')
-labelMakanan4.grid(row=6, column=0)
-inputMakanan4= Entry(inputCont, font=('ariel' , 16, 'bold'), textvariable=Makanan4 , bd=6, insertwidth=4, bg="powder blue" , justify='right')
-inputMakanan4.grid(row=6, column=1)
+labelMakanan2 = Label(inputCont, font=( 'Consolas' , 18, 'bold' ), text="Nasi Uduk", fg="steel blue", bg="#F6F6F6",  bd=10, anchor='w', padx=10, pady=10)
+labelMakanan2.grid(row=4, column=1)
+inputMakanan2 = Entry(inputCont, font=('Consolas' , 18, 'bold'), textvariable=Makanan2 , bd=6, insertwidth=4, bg="powder blue" , justify='right')
+inputMakanan2.grid(row=4, column=2)
 
-labelMakanan5 = Label(inputCont, font=( 'aria' , 16, 'bold' ), text="Cheese burger", fg="steel blue", bd=10, anchor='w')
-labelMakanan5.grid(row=7, column=0)
-inputMakanan5 = Entry(inputCont, font=('ariel' , 16, 'bold'), textvariable=Makanan5, bd=6, insertwidth=4, bg="powder blue" , justify='right')
-inputMakanan5.grid(row=7, column=1)
+inputGambar("img/makanan2.png", 4)
 
-labelMinuman = Label(inputCont, font=( 'aria' , 16, 'bold' ), text="Drinks", fg="steel blue", bd=10, anchor='w')
-labelMinuman.grid(row=8, column=0)
-inputMinuman = Entry(inputCont, font=('ariel' , 16, 'bold'), textvariable=Minuman , bd=6, insertwidth=4, bg="powder blue" , justify='right')
-inputMinuman.grid(row=8, column=1)
+labelMakanan3 = Label(inputCont, font=( 'Consolas' , 18, 'bold' ), text="Lontong Sayur", fg="steel blue", bg="#F6F6F6", bd=10, anchor='w', padx=10, pady=10)
+labelMakanan3.grid(row=5, column=1)
+inputMakanan3 = Entry(inputCont, font=('Consolas' , 18, 'bold'), textvariable=Makanan3 , bd=6, insertwidth=4, bg="powder blue" , justify='right')
+inputMakanan3.grid(row=5, column=2)
+
+inputGambar("img/makanan3.png", 5)
+
+labelMakanan4 = Label(inputCont, font=( 'Consolas' , 18, 'bold' ), text="Bubur Ayam", fg="steel blue", bg="#F6F6F6", bd=10, anchor='w', padx=10, pady=10)
+labelMakanan4.grid(row=6, column=1)
+inputMakanan4= Entry(inputCont, font=('Consolas' , 18, 'bold'), textvariable=Makanan4 , bd=6, insertwidth=4, bg="powder blue" , justify='right')
+inputMakanan4.grid(row=6, column=2)
+
+inputGambar("img/makanan4.png", 6)
+
+labelMakanan5 = Label(inputCont, font=( 'Consolas' , 18, 'bold' ), text="Soto Betawi", fg="steel blue", bg="#F6F6F6", bd=10, anchor='w', padx=10, pady=10)
+labelMakanan5.grid(row=7, column=1)
+inputMakanan5 = Entry(inputCont, font=('Consolas' , 18, 'bold'), textvariable=Makanan5, bd=6, insertwidth=4, bg="powder blue" , justify='right')
+inputMakanan5.grid(row=7, column=2)
+
+inputGambar("img/makanan5.png", 7)
+
+labelMinuman = Label(inputCont, font=( 'Consolas' , 18, 'bold' ), text="Teh Manis", fg="steel blue", bg="#F6F6F6",  bd=10, anchor='w', padx=10, pady=10)
+labelMinuman.grid(row=8, column=1)
+inputMinuman = Entry(inputCont, font=('Consolas' , 18, 'bold'), textvariable=Minuman , bd=6, insertwidth=4, bg="powder blue" , justify='right')
+inputMinuman.grid(row=8, column=2)
+
+inputGambar("img/minuman.png", 8)
 
 #--------------------------------------------------------------------------------------
 
-labelSubTotal = Label(inputCont, font=( 'aria' , 16, 'bold' ), text="Sub Total", fg="steel blue", bd=10, anchor='w')
-labelSubTotal.grid(row=2, column=2)
-boxSubTotal = Entry(inputCont, font=('ariel' , 16, 'bold'), textvariable=Subtotal , bd=6, insertwidth=4, bg="powder blue" , justify='right')
-boxSubTotal.grid(row=2, column=3)
+labelSubTotal = Label(inputCont, font=( 'Consolas' , 18, 'bold' ), text="Sub Total", fg="steel blue", bg="#F6F6F6", bd=10, anchor='w')
+labelSubTotal.grid(row=2, column=3)
+boxSubTotal = Entry(inputCont, font=('Consolas' , 18, 'bold'), textvariable=Subtotal , bd=6, insertwidth=4, bg="powder blue" , justify='right')
+boxSubTotal.grid(row=2, column=4)
 
-labelService = Label(inputCont, font=( 'aria' , 16, 'bold' ), text="Service Charge", fg="steel blue", bd=10, anchor='w')
-labelService.grid(row=3, column=2)
-boxService = Entry(inputCont, font=('ariel' , 16, 'bold'), textvariable=Service_Charge , bd=6, insertwidth=4, bg="powder blue" , justify='right')
-boxService.grid(row=3, column=3)
+labelService = Label(inputCont, font=( 'Consolas' , 18, 'bold' ), text="Service Charge", fg="steel blue", bg="#F6F6F6", bd=10, anchor='w')
+labelService.grid(row=3, column=3)
+boxService = Entry(inputCont, font=('Consolas' , 18, 'bold'), textvariable=Service_Charge , bd=6, insertwidth=4, bg="powder blue" , justify='right')
+boxService.grid(row=3, column=4)
 
-labelTax = Label(inputCont, font=( 'aria' , 16, 'bold' ), text="Tax", fg="steel blue", bd=10, anchor='w')
-labelTax.grid(row=4, column=2)
-boxTax = Entry(inputCont, font=('ariel' , 16, 'bold'), textvariable=Tax , bd=6, insertwidth=4, bg="powder blue" , justify='right')
-boxTax.grid(row=4, column=3)
+labelTax = Label(inputCont, font=( 'Consolas' , 18, 'bold' ), text="Tax", fg="steel blue", bg="#F6F6F6", bd=10, anchor='w')
+labelTax.grid(row=4, column=3)
+boxTax = Entry(inputCont, font=('Consolas' , 18, 'bold'), textvariable=Tax , bd=6, insertwidth=4, bg="powder blue" , justify='right')
+boxTax.grid(row=4, column=4)
 
-labelTotal = Label(inputCont, font=( 'aria' , 16, 'bold' ), text="Total", fg="steel blue", bd=10, anchor='w')
-labelTotal.grid(row=5, column=2)
-boxTotal = Entry(inputCont, font=('ariel' , 16, 'bold'), textvariable=Total , bd=6, insertwidth=4, bg="powder blue" , justify='right')
-boxTotal.grid(row=5, column=3)
+labelTotal = Label(inputCont, font=( 'Consolas' , 18, 'bold' ), text="Total", fg="steel blue", bg="#F6F6F6",  bd=10, anchor='w')
+labelTotal.grid(row=5, column=3)
+boxTotal = Entry(inputCont, font=('Consolas' , 18, 'bold'), textvariable=Total , bd=6, insertwidth=4, bg="powder blue" , justify='right')
+boxTotal.grid(row=5, column=4)
 
-labelUang = Label(inputCont, font=( 'aria' , 16, 'bold' ), text="Uang", fg="steel blue", bd=10, anchor='w')
-labelUang.grid(row=7, column=2)
-inputUang = Entry(inputCont, font=('ariel' , 16, 'bold'), textvariable=Uang , bd=6, insertwidth=4, bg="powder blue" , justify='right')
-inputUang.grid(row=7, column=3)
+labelUang = Label(inputCont, font=( 'Consolas' , 18, 'bold' ), text="Uang", fg="steel blue", bg="#F6F6F6", bd=10, anchor='w')
+labelUang.grid(row=7, column=3)
+inputUang = Entry(inputCont, font=('Consolas' , 18, 'bold'), textvariable=Uang , bd=6, insertwidth=4, bg="powder blue" , justify='right')
+inputUang.grid(row=7, column=4)
 
-labelKembalian = Label(inputCont, font=( 'aria' , 16, 'bold' ), text="Kembalian", fg="steel blue", bd=10, anchor='w')
-labelKembalian.grid(row=8, column=2)
-boxKembalian = Entry(inputCont, font=('ariel' , 16, 'bold'), textvariable=Kembalian , bd=6, insertwidth=4, bg="powder blue" , justify='right')
-boxKembalian.grid(row=8, column=3)
+labelKembalian = Label(inputCont, font=( 'Consolas' , 18, 'bold' ), text="Kembalian", fg="steel blue", bg="#F6F6F6", bd=10, anchor='w')
+labelKembalian.grid(row=8, column=3)
+boxKembalian = Entry(inputCont, font=('Consolas' , 18, 'bold'), textvariable=Kembalian , bd=6, insertwidth=4, bg="powder blue" , justify='right')
+boxKembalian.grid(row=8, column=4)
 
 
 ########## TAMPILAN INFO KESELURUHAN ##########
-lblgaris1= Label(infoCont, text=" ", fg="steel blue")
+lblgaris1= Label(infoCont, text=" ", bg="#F6F6F6")
 lblgaris1.grid(row=0, columnspan=15)
 
-lblgaris2 = Label(infoCont, text=" ", fg="steel blue")
+lblgaris2 = Label(infoCont, text=" ", bg="#F6F6F6")
 lblgaris2.grid(row=1, columnspan=15)
 
-lblpelanggan = Label(infoCont, font=( 'aria' , 16, 'bold' ), text="Total Coustomer", fg="steel blue", justify=RIGHT)
+lblpelanggan = Label(infoCont, font=( 'Consolas' , 18, 'bold' ), text="Total Coustomer", fg="steel blue", bg="#F6F6F6", justify=RIGHT)
 lblpelanggan.grid(row=2, column=0)
-lblpelanggan = Label(infoCont, font=( 'aria' , 16, 'bold' ), textvariable=Pelanggan, fg="steel blue", justify=RIGHT)
+lblpelanggan = Label(infoCont, font=( 'Consolas' , 18, 'bold' ), textvariable=Pelanggan, fg="steel blue", bg="#F6F6F6",  justify=RIGHT)
 lblpelanggan.grid(row=3, column=0)
 
-lblpelanggan = Label(infoCont, font=( 'aria' , 16, 'bold' ), text="Income", fg="steel blue", justify=RIGHT)
+lblpelanggan = Label(infoCont, font=( 'Consolas' , 18, 'bold' ), text="Income", fg="steel blue", bg="#F6F6F6", justify=RIGHT)
 lblpelanggan.grid(row=4, column=0)
-lblpelanggan = Label(infoCont, font=( 'aria' , 16, 'bold' ), textvariable=Income, fg="steel blue", justify=RIGHT)
+lblpelanggan = Label(infoCont, font=( 'Consolas' , 18, 'bold' ), textvariable=Income, fg="steel blue", bg="#F6F6F6", justify=RIGHT)
 lblpelanggan.grid(row=5, column=0)
 
 ########## TOMBOL MENU ##########
-lblgaris1= Label(buttonCont, text=" ", fg="steel blue")
+lblgaris1= Label(buttonCont, text=" ", fg="steel blue", bg="#F6F6F6", )
 lblgaris1.grid(row=0, columnspan=15)
 
-lblgaris2 = Label(buttonCont, text=" ", fg="steel blue")
+lblgaris2 = Label(buttonCont, text=" ", fg="steel blue", bg="#F6F6F6", )
 lblgaris2.grid(row=1, columnspan=15)
 
-buttonMenu = Button(buttonCont, padx=16, pady=8, bd=10 , fg="black", font=('ariel' , 16, 'bold'), width=10, text="MENU", bg="powder blue", command=list_menu)
+buttonMenu = Button(buttonCont, padx=16, pady=8, bd=10 , fg="black", font=('Consolas' , 16, 'bold'), width=10, text="MENU", bg="powder blue", command=list_menu)
 buttonMenu.grid(row=2, column=0)
 
-buttonTotal = Button(buttonCont, padx=16, pady=8, bd=10 , fg="black", font=('ariel' , 16, 'bold'), width=10, text="TOTAL", bg="powder blue", command=totalFunction)
+buttonTotal = Button(buttonCont, padx=16, pady=8, bd=10 , fg="black", font=('Consolas' , 16, 'bold'), width=10, text="TOTAL", bg="powder blue", command=totalFunction)
 buttonTotal.grid(row=2, column=1)
 
-buttonPrint = Button(buttonCont, padx=16, pady=8, bd=10 , fg="black", font=('ariel' , 16, 'bold'), width=10, text="PRINT", bg="powder blue", command=exitFunction)
-buttonPrint.grid(row=2, column=2)
-
-buttonReset = Button(buttonCont, padx=16, pady=8, bd=10 , fg="black", font=('ariel' , 16, 'bold'), width=10, text="RESET", bg="powder blue", command=resetFunction)
+buttonReset = Button(buttonCont, padx=16, pady=8, bd=10 , fg="black", font=('Consolas' , 16, 'bold'), width=10, text="RESET", bg="powder blue", command=resetFunction)
 buttonReset.grid(row=2, column=3)
 
-buttonExit = Button(buttonCont, padx=16, pady=8, bd=10 , fg="black", font=('ariel' , 16, 'bold'), width=10, text="EXIT", bg="powder blue", command=exitFunction)
+buttonExit = Button(buttonCont, padx=16, pady=8, bd=10 , fg="black", font=('Consolas' , 16, 'bold'), width=10, text="EXIT", bg="powder blue", command=exitFunction)
 buttonExit.grid(row=2, column=4)
 
 root.mainloop()
